@@ -10,6 +10,8 @@ public class GlobeFetcher : MonoBehaviour {
 	List<GameObject> lines;
 	List<Vector3> positions;
 	List<float> mags;
+	
+	float r;
     
 	IEnumerator Start() {
 		lines = new List<GameObject>();
@@ -22,7 +24,7 @@ public class GlobeFetcher : MonoBehaviour {
 		JSONObject j = new JSONObject(www.text);
 		
 		foreach (var jsonObject in j.list) {
-			float r = gameObject.transform.localScale.x;
+			r = gameObject.transform.localScale.x;
 			
 			float latitude = float.Parse(jsonObject.GetField("coordinates").GetField("latitude").ToString()) * ((float) System.Math.PI / 180f);
 			float longitude = float.Parse(jsonObject.GetField("coordinates").GetField("longitude").ToString()) * ((float) System.Math.PI / 180f);			
@@ -69,7 +71,7 @@ public class GlobeFetcher : MonoBehaviour {
 		for (int i = 0; i < lines.Count; i++) {
 			
 			Vector3 relativePos = positions[i];
-			relativePos = gameObject.transform.rotation * relativePos;
+			relativePos = gameObject.transform.rotation * (relativePos * gameObject.transform.localScale.x / r);
 			Vector3 pos = gameObject.transform.position + relativePos;
 			Vector3 dir = relativePos.normalized;
 			
