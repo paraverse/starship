@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GlobeFetcher : MonoBehaviour {
+public class GlobeVisual : MonoBehaviour {
 	
-	public string url = "http://dev.aasen.in:1337/github-globe/";
+	public string sourceURL = "http://dev.aasen.in:1337/github-globe/";
     
 	IEnumerator Start() {
-        WWW www = new WWW(url);
+        WWW www = new WWW(sourceURL);
         yield return www;
         
 		JSONObject j = new JSONObject(www.text);
@@ -34,19 +34,9 @@ public class GlobeFetcher : MonoBehaviour {
 			line.SetPosition(1, pos + dir * magnitude * 10);
 			line.SetWidth(.3f, .3f);
 			
-			line.material = new Material (Shader.Find("Particles/Additive"));
-			Color color = new Color(magnitude * 2, 0, 1-magnitude);
+			line.material = new Material(Shader.Find("Particles/Additive"));
+			Color color = new Color(magnitude * 2, 0, 1 - magnitude);
 			line.SetColors(color, color);
-			
-			
-			
-			/*
-			GameObject bar = GameObject.CreatePrimitive(PrimitiveType.Cube); 
-			
-			bar.transform.position = gameObject.transform.position + (new Vector3(x, y, z) * 0.5f);
-			bar.transform.localScale = new Vector3(0.05f, 0.05f, magnitude * 10f);
-			bar.transform.LookAt(gameObject.transform);
-			*/
 		}
 	}
 }
