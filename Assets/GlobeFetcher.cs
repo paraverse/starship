@@ -22,12 +22,31 @@ public class GlobeFetcher : MonoBehaviour {
 			float y = (float) (r * System.Math.Sin(latitude));
 			float z = (float) (r * System.Math.Cos(latitude) * System.Math.Cos(longitude));
 			
-			GameObject bar = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        	
+			Vector3 pos = gameObject.transform.position + new Vector3(x, y, z) * .5f;
+			Vector3 dir = new Vector3(x, y, z).normalized;
+			
+			GameObject center = new GameObject();
+			center.transform.position = gameObject.transform.position;
+			
+			LineRenderer line = (LineRenderer) center.AddComponent(typeof(LineRenderer));
+			line.SetVertexCount(2);
+			line.SetPosition(0, pos);
+			line.SetPosition(1, pos + dir * magnitude * 10);
+			line.SetWidth(.3f, .3f);
+			
+			line.material = new Material (Shader.Find("Particles/Additive"));
+			Color color = new Color(magnitude * 2, 0, 1-magnitude);
+			line.SetColors(color, color);
+			
+			
+			
+			/*
+			GameObject bar = GameObject.CreatePrimitive(PrimitiveType.Cube); 
+			
 			bar.transform.position = gameObject.transform.position + (new Vector3(x, y, z) * 0.5f);
 			bar.transform.localScale = new Vector3(0.05f, 0.05f, magnitude * 10f);
 			bar.transform.LookAt(gameObject.transform);
-			
+			*/
 		}
 	}
 }
