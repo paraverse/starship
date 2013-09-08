@@ -138,6 +138,8 @@ public class FarmVisual : MonoBehaviour {
 		line.material = new Material (Shader.Find("Particles/Additive"));
 		line.SetColors(color, color);
 
+		center.transform.parent = gameObject.transform;
+		
 		return center;
 	}
 	

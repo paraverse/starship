@@ -53,6 +53,8 @@ public class GlobeFetcher : MonoBehaviour {
 			Color color = new Color(magnitude * 2, 0, 1-magnitude);
 			line.SetColors(color, color);
 			
+			center.transform.parent = gameObject.transform;
+			
 			lines.Add(center);
 			positions.Add(relativePos);
 			
