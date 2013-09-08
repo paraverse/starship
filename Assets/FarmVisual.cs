@@ -60,28 +60,6 @@ public class FarmVisual : MonoBehaviour {
 		MakeLines(serversOverTime[currentIteration]);
 	}
 	
-	private void DestroyVisual() {
-		DestroyGameObjectList(cpuLines);
-		cpuLines = new List<GameObject>();
-		
-		DestroyGameObjectList(ramLines);
-		ramLines = new List<GameObject>();
-		
-		DestroyGameObjectList(networkLines);
-		networkLines = new List<GameObject>();
-		
-		DestroyGameObjectList(diskLines);
-		diskLines = new List<GameObject>();
-		
-		Destroy(gameObject);
-	}
-	
-	private void DestroyGameObjectList(List<GameObject> objects) {
-		foreach (GameObject go in objects) {
-			Destroy(go);
-		}
-	}
-	
 	private void MakeLines(List<Server> servers) {
 		float dimension = (float) System.Math.Ceiling(System.Math.Sqrt(servers.Count));
 		
@@ -145,7 +123,8 @@ public class FarmVisual : MonoBehaviour {
 	
 	void Update () {
 		if(Input.GetKey(KeyCode.Space)) {
-            DestroyVisual();
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			gameObject.SetActive(false);
         }
 		
 		if (serversOverTime.Count > 0) {

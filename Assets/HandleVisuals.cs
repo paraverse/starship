@@ -1,33 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HandleVisuals : MonoBehaviour {
+	public static List<GameObject> inactiveObjects = new List<GameObject>();
+
 	void Start () {
 
 	}
 	
-	private void StartFarm() {
-		GameObject farm = GameObject.CreatePrimitive(PrimitiveType.Plane);
-		farm.transform.position = gameObject.transform.position + new Vector3(0f, 0f, 20f);
-		farm.transform.localScale = new Vector3(1f, 10f, 1f);
-		farm.AddComponent("FarmVisual");
-	}
-	
-	private void StartGlobe() {
-		GameObject globe = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-		globe.transform.position = gameObject.transform.position + new Vector3(0f, 0f, 20f);
-		globe.transform.localScale = new Vector3(10f, 10f, 10f);
-		globe.renderer.sharedMaterial = (Material) Resources.Load("Earth");
-		globe.AddComponent("GlobeFetcher");
-	}
-	
 	void Update () {
 		if(Input.GetKey(KeyCode.F)) {
-            StartFarm();
-        }
+			Reactivate("FarmVisual");
+		}
 		
 		if(Input.GetKey(KeyCode.G)) {
-            StartGlobe();
-        }
+			Reactivate("GlobeVisual");
+		}		
+	}
+	
+	private void Reactivate(string name) {
+		for (int i = 0; i < inactiveObjects.Count; i++) {
+			if (inactiveObjects[i].name == name) {
+				inactiveObjects[i].SetActive(true);
+				inactiveObjects.RemoveAt(i);
+				i--;
+			}
+		}
 	}
 }
