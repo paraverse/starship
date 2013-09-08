@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class GlobeFetcher : MonoBehaviour {
+public class GlobeFetcher : MonoBehaviour, hideable {
 	
 	public string url = "http://dev.aasen.in:1337/github-globe/";
 	
@@ -12,6 +12,12 @@ public class GlobeFetcher : MonoBehaviour {
 	List<float> mags;
 	
 	float r;
+	
+	private bool h = false;
+	
+	public void hide() {
+		h = true;
+	}
     
 	IEnumerator Start() {
 		lines = new List<GameObject>();
@@ -61,10 +67,8 @@ public class GlobeFetcher : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (Input.GetKey(KeyCode.Space)) {
-			HandleVisuals.inactiveObjects.Add(gameObject);
-			gameObject.SetActive(false);
-        }
+		//if(Input.GetKey(KeyCode.Space)) {
+		
 		
 		for (int i = 0; i < lines.Count; i++) {
 			
@@ -78,7 +82,12 @@ public class GlobeFetcher : MonoBehaviour {
 			line.SetVertexCount(2);
 			line.SetPosition(0, pos);
 			line.SetPosition(1, pos + dir * mags[i] * 10);
-			
 		}
+		if (h && lines.Count > 0) {
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			h = false;
+			gameObject.SetActive(false);
+			
+        }
 	}
 }
