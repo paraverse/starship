@@ -13,6 +13,7 @@ public class HandleVisuals : MonoBehaviour {
 	void Start () {
 		hideGlobe ();
 		hideFarm ();
+		hideParticle ();
 		handL = GameObject.Find("Left Hand");
 		handR = GameObject.Find("Right Hand");
 	}
@@ -47,12 +48,19 @@ public class HandleVisuals : MonoBehaviour {
 		if(Input.GetKey(KeyCode.F) || lCollide3 || rCollide3) {
 			Reactivate("FarmVisual");
 			hideGlobe();
+			hideParticle();
 		}
 		
 		if(Input.GetKey(KeyCode.G) || lCollide4 || rCollide4) {
 			Reactivate("GlobeVisual");
+			hideParticle();
 			hideFarm ();
-		}		
+		}
+		if(Input.GetKey(KeyCode.H) || lCollide4 || rCollide4) {
+			Reactivate("ParticleSpawner");
+			hideFarm ();
+			hideGlobe();
+		}	
 	}
 	
 	private void Reactivate(string name) {
@@ -84,4 +92,14 @@ public class HandleVisuals : MonoBehaviour {
 			}
 		}
 	}
+	private void hideParticle() {
+		GameObject particle = GameObject.Find ("ParticleSpawner");
+		if (particle != null) {
+			ParticleSpawner v = (ParticleSpawner) particle.GetComponent("ParticleSpawner");
+			if (v != null) {
+				v.hide ();
+			}
+		}
+	}
+
 }

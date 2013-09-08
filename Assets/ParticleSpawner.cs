@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 
-public class ParticleSpawner : MonoBehaviour {
+public class ParticleSpawner : MonoBehaviour, hideable {
 
 	int currentParticle = 0;
 	static int numberOfParticles = 100;
@@ -10,7 +10,11 @@ public class ParticleSpawner : MonoBehaviour {
 	
 	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[numberOfParticles];
 	
- 
+ 	private bool h = false;
+	
+	public void hide () {
+		h = true;
+	}
 	void Start () {
 		for(int k = 0; k < numberOfParticles; k++){
 			points[k] = new float[4];
@@ -20,6 +24,11 @@ public class ParticleSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update (){
+		if (h) {
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			gameObject.SetActive(false);
+			h = false;
+        }
 	}
 	
 	
@@ -55,7 +64,7 @@ public class ParticleSpawner : MonoBehaviour {
 		particleSystem.loop = false;
 		particleSystem.SetParticles(particles, length);
 		Debug.Log("Time: " + particleSystem.duration);
-		GameObject player = GameObject.Find ("Plane");
+		GameObject player = GameObject.Find ("ParticleSpawner");
 		Vector3 position = player.renderer.bounds.extents;
 		Debug.Log(position);
 		spawnParticle(Random.value*position.x, Random.value*position.z);
