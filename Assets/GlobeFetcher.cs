@@ -67,6 +67,19 @@ public class GlobeFetcher : MonoBehaviour {
 		}
 	}
 	
+	void DestroyVisual() {
+		DestroyGameObjectList(lines);
+		lines = new List<GameObject>();
+		
+		Destroy(gameObject);
+	}
+	
+	private void DestroyGameObjectList(List<GameObject> objects) {
+		foreach (GameObject go in objects) {
+			Destroy(go);
+		}
+	}
+	
 	void Update() {
 		for (int i = 0; i < lines.Count; i++) {
 			
@@ -82,5 +95,9 @@ public class GlobeFetcher : MonoBehaviour {
 			line.SetPosition(1, pos + dir * mags[i] * 10);
 			
 		}
+		
+		if(Input.GetKey(KeyCode.Space)) {
+            DestroyVisual();
+        }
 	}
 }
