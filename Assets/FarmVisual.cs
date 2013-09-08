@@ -29,6 +29,7 @@ public class FarmVisual : MonoBehaviour {
 	private int updateInterval = 1;
 	
 	private float dx = 0f;
+	private float dy = 0f;
 	private float dz = 0f;
 	
 	IEnumerator Start () {
@@ -64,37 +65,38 @@ public class FarmVisual : MonoBehaviour {
 		
 		List<GameObject> lines = new List<GameObject>();
 		
-		dx = gameObject.transform.localScale.x / (servers.Count + 1);
-		dz = gameObject.transform.localScale.z / 5;
+		dx = gameObject.renderer.bounds.size.x / (servers.Count + 1);
+		dy = gameObject.renderer.bounds.size.x * gameObject.renderer.bounds.size.z / 20f;
+		dz = gameObject.renderer.bounds.size.z / 5;
 		
 		for (int i = 0; i < servers.Count; i++) {
-			Vector3 pos = gameObject.transform.position - Vector3.Scale(gameObject.transform.localScale, new Vector3(0.5f, 0f, 0.5f));
+			Vector3 pos = gameObject.renderer.bounds.center - gameObject.renderer.bounds.size * 0.5f;
 			
 			cpuLines.Add(MakeLine(
 				pos,
 				pos + new Vector3((i + 1) * dx, 0f, dz),
-				pos + new Vector3((i + 1) * dx, servers[i].cpu, dz),
+				pos + new Vector3((i + 1) * dx, servers[i].cpu * dy, dz),
 				new Vector2(0.2f, 0.2f),
 				new Color(0.752f, 0.223f, 0.168f)));
 
 			ramLines.Add(MakeLine(
 				pos,
 				pos + new Vector3((i + 1) * dx, 0f, 2 * dz),
-				pos + new Vector3((i + 1) * dx, servers[i].ram, 2 * dz),
+				pos + new Vector3((i + 1) * dx, servers[i].ram * dy, 2 * dz),
 				new Vector2(0.2f, 0.2f),
 				new Color(0.204f, 0.596f, 0.859f)));
 			
 			networkLines.Add(MakeLine(
 				pos,
 				pos + new Vector3((i + 1) * dx, 0f, 3 * dz),
-				pos + new Vector3((i + 1) * dx, servers[i].network, 3 * dz),
+				pos + new Vector3((i + 1) * dx, servers[i].network * dy, 3 * dz),
 				new Vector2(0.2f, 0.2f),
 				new Color(0.945f, 0.769f, 0.059f)));
 			
 			diskLines.Add(MakeLine(
 				pos,
 				pos + new Vector3((i + 1) * dx, 0f, 4 * dz),
-				pos + new Vector3((i + 1) * dx, servers[i].disk, 4 * dz),
+				pos + new Vector3((i + 1) * dx, servers[i].disk * dy, 4 * dz),
 				new Vector2(0.2f, 0.2f),
 				new Color(0.153f, 0.682f, 0.376f)));
 
@@ -121,21 +123,29 @@ public class FarmVisual : MonoBehaviour {
 		if (serversOverTime.Count > 0) {
 			if (framesSinceLastChange > updateInterval) {
 				List<Server> servers = serversOverTime[currentIteration];
-
-				Vector3 pos = gameObject.transform.position - Vector3.Scale(gameObject.transform.localScale, new Vector3(0.5f, 0f, 0.5f));
+				
+				dx = gameObject.renderer.bounds.size.x / (servers.Count + 1);
+				dy = gameObject.renderer.bounds.size.x * gameObject.renderer.bounds.size.z / 20f;
+				dz = gameObject.renderer.bounds.size.z / 5;
+				
+				Vector3 pos = gameObject.renderer.bounds.center - gameObject.renderer.bounds.size * 0.5f;
 				
 				for (int i = 0; i < servers.Count; i++) {
 					LineRenderer cpuLine = (LineRenderer) cpuLines[i].GetComponent("LineRenderer");
-					cpuLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].cpu, dz));
+					cpuLine.SetPosition(0, pos + new Vector3((i + 1) * dx, 0f, dz));
+					cpuLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].cpu * dy, dz));
 	
 					LineRenderer ramLine = (LineRenderer) ramLines[i].GetComponent("LineRenderer");
-					ramLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].ram, 2 * dz));
+					ramLine.SetPosition(0, pos + new Vector3((i + 1) * dx, 0f, 2 * dz));
+					ramLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].ram * dy, 2 * dz));
 			
 					LineRenderer networkLine = (LineRenderer) networkLines[i].GetComponent("LineRenderer");
-					networkLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].network, 3 * dz));
+					networkLine.SetPosition(0, pos + new Vector3((i + 1) * dx, 0f, 3 * dz));
+					networkLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].network * dy, 3 * dz));
 				
 					LineRenderer diskLine = (LineRenderer) diskLines[i].GetComponent("LineRenderer");
-					diskLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].disk, 4 * dz));
+					diskLine.SetPosition(0, pos + new Vector3((i + 1) * dx, 0f, 4 * dz));
+					diskLine.SetPosition(1, pos + new Vector3((i + 1) * dx, servers[i].disk * dy, 4 * dz));
 				}
 		
 				currentIteration = (currentIteration + 1) % serversOverTime.Count;
