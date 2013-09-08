@@ -1,0 +1,67 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.IO;
+
+public class ParticleSpawner : MonoBehaviour {
+
+	int currentParticle = 0;
+	static int numberOfParticles = 100;
+	float[][] points = new float[numberOfParticles][];
+	
+	private ParticleSystem.Particle[] particles = new ParticleSystem.Particle[numberOfParticles];
+	
+ 
+	void Start () {
+		for(int k = 0; k < numberOfParticles; k++){
+			points[k] = new float[3];
+		}
+	}
+	
+	// Update is called once per frame
+	void Update (){
+	}
+	
+	
+	void LateUpdate()
+	{
+		particleSystem.playbackSpeed = 1;
+		
+		int length = particleSystem.GetParticles(particles); 
+		int i = 0;
+		
+		while (i < length)
+		{
+
+			points[i][2] = points[i][2] + (float).1;
+			
+			if(points[i][2] > 10){
+				points[i][2] = 0;	
+			}
+			
+			float x = points[i][0];
+			float y = points[i][1];
+			float z = points[i][2];
+			particles[i].position = new Vector3((float)(x*2),(float)(y*2),(float)(z*2));
+
+			particles[i].size = (float)1;
+			particles[i].color =  Color.magenta;
+
+			i++;
+		
+		}
+		particleSystem.loop = false;
+		particleSystem.SetParticles(particles, length);
+		Debug.Log("Time: " + particleSystem.duration);
+		spawnParticle(Random.value*10, Random.value*10);
+		
+	}
+	
+	void spawnParticle(float x, float y){
+		points[currentParticle][0] = x;
+		points[currentParticle][1] = y;
+		currentParticle = currentParticle + 1;
+		if(currentParticle >= 100){
+			currentParticle = 0;
+		}
+	}
+}

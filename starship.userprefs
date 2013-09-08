@@ -1,7 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\ParticleSpawner.cs">
     <Files>
+      <File FileName="Assets\ParticleSpawner.cs" Line="39" Column="20" />
       <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" Line="30" Column="2" />
       <File FileName="Assets\GlobeFetcher.cs" Line="1" Column="1" />
       <File FileName="Assets\SixenseInput\Scripts\SixenseInput.cs" Line="1" Column="1" />
