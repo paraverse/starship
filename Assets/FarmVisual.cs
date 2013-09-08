@@ -116,10 +116,17 @@ public class FarmVisual : MonoBehaviour {
 		line.material = new Material (Shader.Find("Particles/Additive"));
 		line.SetColors(color, color);
 
+		center.transform.parent = gameObject.transform;
+		
 		return center;
 	}
 	
 	void Update () {
+		if(Input.GetKey(KeyCode.Space)) {
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			gameObject.SetActive(false);
+        }
+		
 		if (serversOverTime.Count > 0) {
 			if (framesSinceLastChange > updateInterval) {
 				List<Server> servers = serversOverTime[currentIteration];

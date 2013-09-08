@@ -53,21 +53,19 @@ public class GlobeFetcher : MonoBehaviour {
 			Color color = new Color(magnitude * 2, 0, 1-magnitude);
 			line.SetColors(color, color);
 			
+			center.transform.parent = gameObject.transform;
+			
 			lines.Add(center);
 			positions.Add(relativePos);
-			
-			/*
-			GameObject bar = GameObject.CreatePrimitive(PrimitiveType.Cube); 
-			
-			bar.transform.position = gameObject.transform.position + (new Vector3(x, y, z) * 0.5f);
-			
-			bar.transform.localScale = new Vector3(0.05f, 0.05f, magnitude * 20f);
-			bar.transform.LookAt(gameObject.transform);
-			*/
 		}
 	}
 	
 	void Update() {
+		if (Input.GetKey(KeyCode.Space)) {
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			gameObject.SetActive(false);
+        }
+		
 		for (int i = 0; i < lines.Count; i++) {
 			
 			Vector3 relativePos = positions[i];

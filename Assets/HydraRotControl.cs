@@ -28,17 +28,22 @@ public class HydraRotControl : MonoBehaviour {
 		if (handR == null)
 			handR = GameObject.Find("Right Hand");
 		
+		if (handL == null || handR == null)
+			return;
+		
 		// Material mat = (Material) gameObject.GetComponent<Material>();
 		Vector3 l = handL.transform.position;
 		Vector3 r = handR.transform.position;
 		
 		bool move = false;
 		
-		bool lCollide = gameObject.collider.bounds.Contains(handL.transform.position);
-		bool rCollide = gameObject.collider.bounds.Contains(handR.transform.position);
+		bool lCollide = gameObject.collider.bounds.Contains(l);
+		bool rCollide = gameObject.collider.bounds.Contains(r);
 		
 		SixenseInput.Controller lControl = SixenseInput.GetController(SixenseHands.LEFT);
 		SixenseInput.Controller rControl = SixenseInput.GetController(SixenseHands.RIGHT);
+		
+		if (lControl != null && rControl != null) {
 		
 		lDown = (lCollide || lDown) && lControl.GetButton(SixenseButtons.TRIGGER);
 		rDown = (rCollide || rDown) && rControl.GetButton(SixenseButtons.TRIGGER);
@@ -69,6 +74,8 @@ public class HydraRotControl : MonoBehaviour {
 		
 		lPrev = l;
 		rPrev = r;
+			
+		}
 		
 		//gameObject.transform.Rotate(rotSpeed);
 		gameObject.transform.RotateAround(rotSpeed, rotSpeed.magnitude / 10);

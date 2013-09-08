@@ -20,7 +20,7 @@ public class HydraSizeControl : MonoBehaviour {
 		handL = GameObject.Find("Left Hand");
 		handR = GameObject.Find("Right Hand");
 		scaleSpeed = 0;
-		totalScale = 20;
+		totalScale = gameObject.collider.transform.localScale.magnitude / 2;
 	}
 	
 	// Update is called once per frame
@@ -30,18 +30,21 @@ public class HydraSizeControl : MonoBehaviour {
 		if (handR == null)
 			handR = GameObject.Find("Right Hand");
 		
+		if (handL == null || handR == null)
+			return;
 		// Material mat = (Material) gameObject.GetComponent<Material>();
 		Vector3 l = handL.transform.position;
 		Vector3 r = handR.transform.position;
 		
 		bool move = false;
 		
-		bool lCollide = gameObject.collider.bounds.Contains(handL.transform.position);
-		bool rCollide = gameObject.collider.bounds.Contains(handR.transform.position);
+		bool lCollide = gameObject.collider.bounds.Contains(l);
+		bool rCollide = gameObject.collider.bounds.Contains(r);
 		
 		SixenseInput.Controller lControl = SixenseInput.GetController(SixenseHands.LEFT);
 		SixenseInput.Controller rControl = SixenseInput.GetController(SixenseHands.RIGHT);
 		
+		if (lControl != null && rControl != null) {
 		lDown = (lCollide || lDown) && lControl.GetButton(SixenseButtons.TRIGGER);
 		rDown = (rCollide || rDown) && rControl.GetButton(SixenseButtons.TRIGGER);
 		
@@ -54,7 +57,7 @@ public class HydraSizeControl : MonoBehaviour {
 		
 		lPrev = l;
 		rPrev = r;
-		
+		}
 		//gameObject.transform.Rotate(rotSpeed);
 		totalScale += scaleSpeed;
 		gameObject.transform.localScale = new Vector3(totalScale, totalScale, totalScale);
