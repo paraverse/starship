@@ -13,7 +13,8 @@ public class ParticleSpawner : MonoBehaviour {
  
 	void Start () {
 		for(int k = 0; k < numberOfParticles; k++){
-			points[k] = new float[3];
+			points[k] = new float[4];
+			
 		}
 	}
 	
@@ -34,7 +35,7 @@ public class ParticleSpawner : MonoBehaviour {
 
 			points[i][2] = points[i][2] + (float).1;
 			
-			if(points[i][2] > 10){
+			if(points[i][2] > Random.value * 30){
 				points[i][2] = 0;	
 			}
 			
@@ -44,7 +45,9 @@ public class ParticleSpawner : MonoBehaviour {
 			particles[i].position = new Vector3((float)(x*2),(float)(y*2),(float)(z*2));
 
 			particles[i].size = (float)1;
-			particles[i].color =  Color.magenta;
+			particles[i].color =  Color.white;	
+			
+			
 
 			i++;
 		
@@ -52,7 +55,10 @@ public class ParticleSpawner : MonoBehaviour {
 		particleSystem.loop = false;
 		particleSystem.SetParticles(particles, length);
 		Debug.Log("Time: " + particleSystem.duration);
-		spawnParticle(Random.value*10, Random.value*10);
+		GameObject player = GameObject.Find ("Plane");
+		Vector3 position = player.renderer.bounds.extents;
+		Debug.Log(position);
+		spawnParticle(Random.value*position.x, Random.value*position.z);
 		
 	}
 	
