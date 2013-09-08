@@ -2,9 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FarmVisual : MonoBehaviour {
+public class FarmVisual : MonoBehaviour, hideable {
 	
 	public string farmURL = "http://dev.aasen.in:1337/server-farm/";
+	
+	private bool h = false;
+	
+	public void hide () {
+		h = true;
+	}
 	
 	struct Server {
 		public float cpu, ram, network, disk;
@@ -122,10 +128,7 @@ public class FarmVisual : MonoBehaviour {
 	}
 	
 	void Update () {
-		if(Input.GetKey(KeyCode.Space)) {
-			HandleVisuals.inactiveObjects.Add(gameObject);
-			gameObject.SetActive(false);
-        }
+		//if(Input.GetKey(KeyCode.Space)) {
 		
 		if (serversOverTime.Count > 0) {
 			if (framesSinceLastChange > updateInterval) {
@@ -162,6 +165,10 @@ public class FarmVisual : MonoBehaviour {
 		}
 		
 		framesSinceLastChange++;
-		
+		if (h && cpuLines.Count > 0) {
+			HandleVisuals.inactiveObjects.Add(gameObject);
+			gameObject.SetActive(false);
+			h = false;
+        }
 	}
 }
